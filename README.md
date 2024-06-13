@@ -1,33 +1,22 @@
 const cron = require('node-cron');
 const axios = require('axios');
 
-// OpenWeatherMap API setup
-const API_KEY = 'your_openweathermap_api_key';
-const CITY = 'London';
-const URL = `http://api.openweathermap.org/data/2.5/weather?q=${CITY}&appid=${API_KEY}`;
+// Dog CEO's Dog API URL
+const URL = 'https://dog.ceo/api/breeds/image/random';
 
-const fetchWeatherData = async () => {
+const fetchDogImage = async () => {
     try {
         const response = await axios.get(URL);
         const data = response.data;
 
-        const weatherInfo = {
-            city: data.name,
-            temperature: (data.main.temp - 273.15).toFixed(2), // Convert from Kelvin to Celsius
-            weather: data.weather[0].description,
-            date: new Date().toLocaleString()
-        };
-
-        console.log(`Weather data fetched at ${weatherInfo.date}`);
-        console.log(`City: ${weatherInfo.city}`);
-        console.log(`Temperature: ${weatherInfo.temperature}°C`);
-        console.log(`Weather: ${weatherInfo.weather}`);
+        console.log(`Fetched dog image at ${new Date().toLocaleString()}`);
+        console.log(`Image URL: ${data.message}`);
     } catch (error) {
-        console.error('Error fetching weather data:', error);
+        console.error('Error fetching dog image:', error);
     }
 };
 
-// Schedule the task to run every hour
-cron.schedule('0 * * * *', fetchWeatherData);
+// Schedule the task to run every 5 minutes
+cron.schedule('*/5 * * * *', fetchDogImage);
 
-console.log('Cron job scheduled to fetch weather data every hour.');
+console.log('Cron job scheduled to fetch a dog image every 5 minutes.');
